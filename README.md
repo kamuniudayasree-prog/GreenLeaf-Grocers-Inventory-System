@@ -78,3 +78,10 @@ Do not use demo credentials on a public deployment. Change default passwords bef
 
 GitHub: [kamuniudayasree-prog](https://github.com/kamuniudayasree-prog)
 
+## 📸 Application Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Dashboard - Part 2
+![Dashboard Part 2](screenshots/dashboard_part2.png)
