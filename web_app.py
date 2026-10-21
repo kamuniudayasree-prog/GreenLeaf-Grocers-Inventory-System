@@ -2,15 +2,18 @@ from flask import Flask, request, redirect
 import sqlite3
 import csv
 import json
+import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import session
 from functools import wraps
+
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "greenleaf.db")
 
 app = Flask(__name__)
 app.secret_key = "greenleaf_secret_key_change_later"
 # Create users table for Admin and Cashier login
 def create_users_table():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -51,7 +54,7 @@ def login():
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "")
 
-        connection = sqlite3.connect("greenleaf.db")
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute(
@@ -103,7 +106,7 @@ def logout():
     return redirect("/login")   
 @app.route("/setup_users")
 def setup_users():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     users = [
@@ -125,7 +128,7 @@ def setup_users():
 @app.route("/products")
 @role_required("admin")
 def products():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     search = request.args.get("search", "").strip()
@@ -341,7 +344,7 @@ def save_product():
     if stock_qty < 0:
         return "Error: Stock quantity cannot be negative.", 400
 
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     try:
@@ -365,7 +368,7 @@ def save_product():
 @app.route("/delete_product/<int:product_id>", methods=["POST"])
 @role_required("admin")
 def delete_product(product_id):
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute(
@@ -384,7 +387,7 @@ def delete_product(product_id):
 @app.route("/edit_product/<int:product_id>", methods=["GET", "POST"])
 @role_required("admin")
 def edit_product(product_id):
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute(
@@ -468,7 +471,7 @@ def update_product(product_id):
     if stock_qty < 0:
         return "Error: Stock quantity cannot be negative.", 400
 
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     try:
@@ -499,7 +502,7 @@ def update_product(product_id):
 @app.route("/billing")
 @role_required("admin", "cashier")
 def billing():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -575,8 +578,9 @@ def billing():
     </html>
     """
 @app.route("/create_bill", methods=["POST"])
+@role_required("admin", "cashier")
 def create_bill():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     try:
@@ -794,7 +798,7 @@ def download_bill(bill_id):
     import io
     from flask import Response
 
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -856,7 +860,7 @@ def download_bill(bill_id):
 @app.route("/sales")
 @role_required("admin", "cashier")
 def sales():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -951,7 +955,7 @@ def sales():
 def dashboard():
     if "user_id" not in session:
         return redirect("/login")
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     # 1. Total Products
@@ -1072,7 +1076,7 @@ def dashboard():
 @app.route("/analytics")
 @role_required("admin", "cashier")
 def analytics():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     start_date = request.args.get("start_date", "2000-01-01")
@@ -1210,7 +1214,7 @@ def analytics():
 @app.route("/low_stock")
 @role_required("admin", "cashier")
 def low_stock():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -1273,7 +1277,7 @@ def low_stock():
 @app.route("/export_products")
 @role_required("admin")
 def export_products():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -1367,7 +1371,7 @@ def import_products():
                 "Product Name, Category, Price, Stock Quantity"
             )
 
-        connection = sqlite3.connect("greenleaf.db")
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         imported = 0
@@ -1418,7 +1422,7 @@ def import_products():
 @app.route("/category_sales")
 @role_required("admin", "cashier")
 def category_sales():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -1503,7 +1507,7 @@ def category_sales():
 @app.route("/daily_sales")
 @role_required("admin", "cashier")
 def daily_sales():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -1570,7 +1574,7 @@ def daily_sales():
 @app.route("/monthly_sales")
 @role_required("admin", "cashier")
 def monthly_sales():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -1626,7 +1630,7 @@ def monthly_sales():
 @app.route("/top_products")
 @role_required("admin", "cashier")
 def top_products():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -1689,7 +1693,7 @@ def top_products():
 @app.route("/slow_moving")
 @role_required("admin", "cashier")
 def slow_moving():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -1823,7 +1827,7 @@ def home():
     """ 
 @app.route("/sales_summary")
 def sales_summary():
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -1881,7 +1885,7 @@ def sales_summary():
 def expiry_alerts():
     import datetime
 
-    connection = sqlite3.connect("greenleaf.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     today = datetime.date.today()
