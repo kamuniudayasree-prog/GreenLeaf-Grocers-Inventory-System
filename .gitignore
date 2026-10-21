@@ -4,3 +4,4 @@
 venv/
 .env
 greenleaf_backup.db
+greenleaf.db
