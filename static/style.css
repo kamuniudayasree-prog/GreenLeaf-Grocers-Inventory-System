@@ -84,3 +84,46 @@ select {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
+
+/* Center dashboard content */
+.dashboard,
+.dashboard-card,
+.stat-card {
+text-align: center;
+}
+
+.dashboard h3,
+.dashboard p,
+.dashboard-card h3,
+.dashboard-card p,
+.stat-card h3,
+.stat-card p {
+text-align: center;
+}
+
+/* Center Inventory Management and Sales Report */
+h2,
+h3 {
+text-align: center;
+}
+
+.dashboard a {
+text-align: center;
+}
+/* Center all dashboard content */
+body {
+text-align: center;
+}
+
+h1,
+h2,
+h3,
+p {
+text-align: center;
+}
+
+a {
+display: inline-block;
+margin: 8px;
+}

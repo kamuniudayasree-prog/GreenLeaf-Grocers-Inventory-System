@@ -75,5 +75,19 @@ CREATE TABLE IF NOT EXISTS sales (
 connection.commit()
 
 print("Sales table created successfully!")
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+print("TABLES:", cursor.fetchall())
+
+cursor.execute("SELECT COUNT(*) FROM products")
+print("TOTAL PRODUCTS:", cursor.fetchone()[0])
+
+cursor.execute("SELECT COUNT(*) FROM sales")
+print("TOTAL SALES:", cursor.fetchone()[0])
+
+cursor.execute("PRAGMA table_info(products)")
+print("PRODUCT COLUMNS:", cursor.fetchall())
+
+cursor.execute("PRAGMA table_info(sales)")
+print("SALES COLUMNS:", cursor.fetchall())
 
 connection.close()
