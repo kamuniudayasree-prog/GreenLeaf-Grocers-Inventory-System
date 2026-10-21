@@ -31,27 +31,6 @@ INSERT OR IGNORE INTO products (name, category, price, stock_qty)
 VALUES (?, ?, ?, ?)
 """, products)
 
-connection.commit()
-connection.commit()
-cursor.execute("""
-DELETE FROM products
-WHERE product_id = 2
-""")
-cursor.execute("""
-DELETE FROM products
-WHERE product_id NOT IN (
-    SELECT MIN(product_id)
-    FROM products
-    GROUP BY name
-)
-""")
-
-connection.commit()
-
-print("Duplicate products removed successfully!")
-connection.commit()
-
-print("Duplicate Rice product removed!")
 cursor.execute("SELECT * FROM products")
 all_products = cursor.fetchall()
 
