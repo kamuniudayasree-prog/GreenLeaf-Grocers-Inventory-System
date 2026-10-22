@@ -10,8 +10,7 @@ from functools import wraps
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "greenleaf.db")
 
 app = Flask(__name__)
-app.secret_key = "greenleaf_secret_key_change_later"
-# Create users table for Admin and Cashier login
+app.secret_key = os.environ.get("SECRET_KEY")
 def create_users_table():
     connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
