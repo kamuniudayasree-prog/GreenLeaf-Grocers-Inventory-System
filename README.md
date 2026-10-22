@@ -1,87 +1,117 @@
-# GreenLeaf Grocers – Inventory & Sales Management System
+# 🛒 GreenLeaf Grocers — Inventory & Sales Management System
+
+A Python Flask-based web application for managing grocery store inventory, billing, sales transactions, and business analytics. The system supports admin and cashier roles, automated stock updates, and sales reporting through an interactive dashboard.
 
 ## 📌 Project Overview
 
-GreenLeaf Grocers is a Python Flask-based web application designed to manage grocery store inventory, billing, sales, and reports. It uses SQLite for database management and provides a simple interface for administrators and cashiers.
+GreenLeaf Grocers helps grocery store owners manage daily operations efficiently through a web-based interface backed by an SQLite database.
 
-## ✨ Features
+## ✨ Key Features
 
-* User login and logout
-* Admin and cashier role-based access
-* Add, edit, delete, search, and filter products
-* Inventory and stock quantity management
-* Billing and discount calculation
-* Automatic stock updates after sales
-* Sales history and bill summaries
-* Low-stock alerts and expiry monitoring
-* Product CSV import and export
-* Bill download and printing
-* Daily and monthly sales reports
-* Product and category sales analytics
-* Interactive charts
+* 🔐 **Authentication & Roles** — Login system with admin and cashier access.
+* 📦 **Inventory Management** — Add, edit, delete, search, and filter products.
+* 🧾 **Billing System** — Generate bills and calculate discounts.
+* 🔄 **Automatic Stock Updates** — Update inventory after successful sales.
+* ⚠️ **Stock & Expiry Alerts** — Identify low-stock and expiring products.
+* 📊 **Sales Analytics** — View sales summaries, reports, and interactive charts.
+* 📅 **Sales History** — Review bill summaries and individual sale details.
+* 📥 **CSV Import & Export** — Support product data management through CSV files.
+* 🖨️ **Bill Printing & Downloading** — Print or download bills.
 
 ## 🛠️ Technologies Used
 
-* Python
-* Flask
-* SQLite
-* HTML and CSS
-* Plotly
-* CSV
+| Technology | Purpose                    |
+| ---------- | -------------------------- |
+| Python     | Application logic          |
+| Flask      | Web application framework  |
+| SQLite     | Database management        |
+| HTML & CSS | User interface and styling |
+| Plotly     | Interactive charts         |
+| CSV        | Data import and export     |
 
-## 📂 Project Files
+## 📂 Project Structure
 
-* `web_app.py` – Main Flask web application
-* `database.py` – Database and product initialization code
-* `app.py` – Command-line application
-* `static/style.css` – Application styling
-* `greenleaf.db` – SQLite database
+```text
+GreenLeaf-Grocers-Inventory-System/
+│
+├── web_app.py
+├── app.py
+├── database.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+│
+└── static/
+    └── style.css
+```
+
+*Note: The SQLite database is created locally when the application is initialized and is not included in the repository.*
 
 ## ⚙️ Installation
 
-1. Install Python 3.13 or a compatible Python version.
-2. Clone or download this repository.
-3. Open a terminal in the project folder.
-4. Install the required packages:
+**Prerequisites:** Python 3.13 or another compatible Python 3 version.
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/kamuniudayasree-prog/GreenLeaf-Grocers-Inventory-System.git
+   ```
+
+2. Open the project directory:
+
+   ```bash
+   cd GreenLeaf-Grocers-Inventory-System
+   ```
+
+3. Install the required packages:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-## ▶️ How to Run
+## ▶️ Run the Application
 
-Run the Flask web application:
+Start the Flask application:
 
 ```bash
 python web_app.py
 ```
 
-Open the local URL displayed in the terminal in your browser.
+Open the local URL shown in your terminal in a web browser.
 
-## 🔐 Login
+## 🔐 Login & Security
 
-Use the administrator or cashier account configured in the application's database.
+The application supports administrator and cashier accounts configured in the database.
 
-Do not use demo credentials on a public deployment. Change default passwords before sharing the application.
+* Use the credentials configured for your local database.
+* Change any default passwords before sharing the application.
+* Configure a secure secret key through environment variables before deploying publicly.
+* Do not publish real passwords, secret keys, or sensitive database information.
 
-## 🚀 Future Improvements
+## 📸 Application Screenshots
 
-* Secure configuration using environment variables
-* Stronger user and password management
+### Dashboard
+
+![GreenLeaf Grocers Dashboard](screenshots/dashboard.png)
+
+### Sales Dashboard
+
+![GreenLeaf Grocers Sales Dashboard](screenshots/sales-dashboard.png)
+
+## 🚀 Future Enhancements
+
+* Secure environment-based configuration
+* Improved user and password management
 * Automated database backups
-* Improved reporting and dashboard design
+* Additional sales and inventory reports
 * Deployment to a secure hosting platform
 
 ## 👩‍💻 Author
 
 **Udayasree**
 
-GitHub: [kamuniudayasree-prog](https://github.com/kamuniudayasree-prog)
+GitHub: [@kamuniudayasree-prog](https://github.com/kamuniudayasree-prog)
 
-## 📸 Application Screenshots
+---
 
-### Dashboard
-![Dashboard](screenshots/dashboard(1).png)
-
-### Dashboard - Part 2
-![Dashboard Part 2](screenshots/dashboard(2).png)
+*Developed as a Python web application project focused on inventory management, billing, and sales analytics.*
