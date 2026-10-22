@@ -81,7 +81,7 @@ GitHub: [kamuniudayasree-prog](https://github.com/kamuniudayasree-prog)
 ## 📸 Application Screenshots
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshots/dashboard(1).png)
 
 ### Dashboard - Part 2
-![Dashboard Part 2](screenshots/dashboard_part2.png)
+![Dashboard Part 2](screenshots/dashboard(2).png)
