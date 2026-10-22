@@ -7,3 +7,4 @@ greenleaf_backup.db
 greenleaf.db
 check_database.py
 upgrade_database.py
+greenleaf_backup_before_deployment.db
