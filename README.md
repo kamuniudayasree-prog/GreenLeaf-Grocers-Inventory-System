@@ -6,6 +6,12 @@ A Python Flask-based web application for managing grocery store inventory, billi
 
 GreenLeaf Grocers helps grocery store owners manage daily operations efficiently through a web-based interface backed by an SQLite database.
 
+## 🌐 Live Demo
+
+**Live Website:** https://greenleaf-grocers-inventory-system.onrender.com
+
+Explore the deployed GreenLeaf Grocers application to test inventory management, billing, discount calculations, stock updates, and sales history.
+
 ## ✨ Key Features
 
 * 🔐 **Authentication & Roles** — Login system with admin and cashier access.
