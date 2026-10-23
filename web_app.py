@@ -8,6 +8,105 @@ from flask import session
 from functools import wraps
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "greenleaf.db")
+def initialize_database():
+    connection = sqlite3.connect(DB_PATH)
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS products (
+            product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            category TEXT NOT NULL,
+            price REAL NOT NULL,
+            stock_qty INTEGER NOT NULL,
+            reorder_level INTEGER NOT NULL DEFAULT 10,
+            expiry_date TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS unique_product_name
+        ON products(name)
+    """)
+
+    products = [
+        ("Rice", "Grains", 60, 100),
+        ("Milk", "Dairy", 30, 50),
+        ("Bread", "Bakery", 40, 20),
+        ("Sugar", "Grains", 45, 80),
+        ("Eggs", "Dairy", 7, 120)
+    ]
+
+    cursor.executemany("""
+        INSERT OR IGNORE INTO products
+        (name, category, price, stock_qty)
+        VALUES (?, ?, ?, ?)
+    """, products)
+ 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS sales (
+            sale_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            product_id INTEGER NOT NULL,
+            product_name TEXT NOT NULL,
+            quantity INTEGER NOT NULL,
+            unit_price REAL NOT NULL,
+            total_amount REAL NOT NULL,
+            sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password_hash TEXT NOT NULL,
+            role TEXT NOT NULL CHECK(role IN ('admin', 'cashier'))
+        )
+    """)
+    from werkzeug.security import generate_password_hash
+
+    users = [
+        ("admin", generate_password_hash("Admin@123"), "admin"),
+        ("cashier", generate_password_hash("Cashier@123"), "cashier")
+    ]
+
+    cursor.executemany("""
+        INSERT OR IGNORE INTO users
+        (username, password_hash, role)
+        VALUES (?, ?, ?)
+    """, users)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS suppliers (
+            supplier_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            phone TEXT,
+            email TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS bills (
+            bill_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            sale_date TEXT DEFAULT CURRENT_TIMESTAMP,
+            subtotal REAL NOT NULL,
+            discount_percent REAL NOT NULL DEFAULT 0,
+            discount_amount REAL NOT NULL DEFAULT 0,
+            total_amount REAL NOT NULL
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS sale_items (
+            sale_item_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            bill_id INTEGER NOT NULL,
+            product_id INTEGER NOT NULL,
+            quantity INTEGER NOT NULL CHECK(quantity > 0),
+            price REAL NOT NULL CHECK(price >= 0),
+            FOREIGN KEY (bill_id) REFERENCES bills(bill_id),
+            FOREIGN KEY (product_id) REFERENCES products(product_id)
+        )
+    """)
+    connection.commit()
+    connection.close()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY")
@@ -23,12 +122,12 @@ def create_users_table():
             role TEXT NOT NULL CHECK(role IN ('admin', 'cashier'))
         )
     """)
-
+ 
     connection.commit()
     connection.close()
 
 
-create_users_table()
+initialize_database()
 def role_required(*allowed_roles):
     def decorator(view_function):
         @wraps(view_function)
